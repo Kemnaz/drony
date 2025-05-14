@@ -1,0 +1,363 @@
+<div class="table-container">
+  <div class="table-header">
+    <h2>Air Quality Monitoring Data</h2>
+    <button mat-raised-button color="primary" (click)="exportData()">
+      Export Data
+    </button>
+  </div>
+
+  <mat-form-field class="filter-input">
+    <mat-label>Filter data</mat-label>
+    <input
+      matInput
+      (keyup)="applyFilter($event)"
+      placeholder="Search in all columns..."
+      #input
+    />
+  </mat-form-field>
+
+  <div class="mat-elevation-z8 table-wrapper">
+    <table mat-table [dataSource]="dataSource" matSort class="full-width-table">
+      <!-- Date Column -->
+      <ng-container matColumnDef="Date">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          class="date-time-column"
+        >
+          {{ getColumnLabel("Date") }}
+        </th>
+        <td mat-cell *matCellDef="let element" class="date-time-column">
+          {{ element.Date }}
+        </td>
+      </ng-container>
+
+      <!-- Time Column -->
+      <ng-container matColumnDef="Time">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          class="date-time-column"
+        >
+          {{ getColumnLabel("Time") }}
+        </th>
+        <td mat-cell *matCellDef="let element" class="date-time-column">
+          {{ element.Time }}
+        </td>
+      </ng-container>
+
+      <!-- PM2.5 Column -->
+      <ng-container matColumnDef="PM25">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="pm-column">
+          {{ getColumnLabel("PM25") }}
+        </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          class="pm-column"
+          [class.high-pm]="element.PM25 > 25"
+        >
+          {{ formatValue("PM25", element.PM25) }}
+        </td>
+      </ng-container>
+
+      <!-- PM10 Column -->
+      <ng-container matColumnDef="PM10">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="pm-column">
+          {{ getColumnLabel("PM10") }}
+        </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          class="pm-column"
+          [class.high-pm]="element.PM10 > 50"
+        >
+          {{ formatValue("PM10", element.PM10) }}
+        </td>
+      </ng-container>
+
+      <!-- IAQ Column -->
+      <ng-container matColumnDef="IAQ">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ getColumnLabel("IAQ") }}
+        </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          [class.good-iaq]="element.IAQ > 80"
+          [class.moderate-iaq]="element.IAQ >= 60 && element.IAQ <= 80"
+          [class.poor-iaq]="element.IAQ < 60"
+        >
+          {{ formatValue("IAQ", element.IAQ) }}
+        </td>
+      </ng-container>
+
+      <!-- HCHO Column -->
+      <ng-container matColumnDef="HCHO">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ getColumnLabel("HCHO") }}
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{ formatValue("HCHO", element.HCHO) }}
+        </td>
+      </ng-container>
+
+      <!-- CO2 Column -->
+      <ng-container matColumnDef="CO2">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ getColumnLabel("CO2") }}
+        </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          [class.high-co2]="element.CO2 > 1000"
+        >
+          {{ formatValue("CO2", element.CO2) }}
+        </td>
+      </ng-container>
+
+      <!-- Pressure Column -->
+      <ng-container matColumnDef="P">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ getColumnLabel("P") }}
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{ formatValue("P", element.P) }}
+        </td>
+      </ng-container>
+
+      <!-- Temperature In Column -->
+      <ng-container matColumnDef="TIN">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ getColumnLabel("TIN") }}
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{ formatValue("TIN", element.TIN) }}
+        </td>
+      </ng-container>
+
+      <!-- Temperature Out Column -->
+      <ng-container matColumnDef="TOUT">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ getColumnLabel("TOUT") }}
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{ formatValue("TOUT", element.TOUT) }}
+        </td>
+      </ng-container>
+
+      <!-- RH In Column -->
+      <ng-container matColumnDef="RHIN">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ getColumnLabel("RHIN") }}
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{ formatValue("RHIN", element.RHIN) }}
+        </td>
+      </ng-container>
+
+      <!-- RH Out Column -->
+      <ng-container matColumnDef="RHOUT">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ getColumnLabel("RHOUT") }}
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{ formatValue("RHOUT", element.RHOUT) }}
+        </td>
+      </ng-container>
+
+      <!-- Latitude Column -->
+      <ng-container matColumnDef="LAT">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ getColumnLabel("LAT") }}
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{ formatValue("LAT", element.LAT) }}
+        </td>
+      </ng-container>
+
+      <!-- Longitude Column -->
+      <ng-container matColumnDef="LON">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ getColumnLabel("LON") }}
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{ formatValue("LON", element.LON) }}
+        </td>
+      </ng-container>
+
+      <!-- Heading Column -->
+      <ng-container matColumnDef="HDG">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ getColumnLabel("HDG") }}
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{ formatValue("HDG", element.HDG) }}
+        </td>
+      </ng-container>
+
+      <!-- AMSL Column -->
+      <ng-container matColumnDef="AMSL">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ getColumnLabel("AMSL") }}
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{ formatValue("AMSL", element.AMSL) }}
+        </td>
+      </ng-container>
+
+      <!-- AGL Column -->
+      <ng-container matColumnDef="AGL">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ getColumnLabel("AGL") }}
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{ formatValue("AGL", element.AGL) }}
+        </td>
+      </ng-container>
+
+      <!-- MIL Column -->
+      <ng-container matColumnDef="MIL">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ getColumnLabel("MIL") }}
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{ formatValue("MIL", element.MIL) }}
+        </td>
+      </ng-container>
+
+      <!-- NO2 Column -->
+      <ng-container matColumnDef="NO2">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ getColumnLabel("NO2") }}
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{ formatValue("NO2", element.NO2) }}
+        </td>
+      </ng-container>
+
+      <!-- NO Column -->
+      <ng-container matColumnDef="NO">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ getColumnLabel("NO") }}
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{ formatValue("NO", element.NO) }}
+        </td>
+      </ng-container>
+
+      <!-- SO2 Column -->
+      <ng-container matColumnDef="SO2">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ getColumnLabel("SO2") }}
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{ formatValue("SO2", element.SO2) }}
+        </td>
+      </ng-container>
+
+      <!-- H2S Column -->
+      <ng-container matColumnDef="H2S">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ getColumnLabel("H2S") }}
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{ formatValue("H2S", element.H2S) }}
+        </td>
+      </ng-container>
+
+      <!-- CO Column -->
+      <ng-container matColumnDef="CO">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ getColumnLabel("CO") }}
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{ formatValue("CO", element.CO) }}
+        </td>
+      </ng-container>
+
+      <!-- HCN Column -->
+      <ng-container matColumnDef="HCN">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ getColumnLabel("HCN") }}
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{ formatValue("HCN", element.HCN) }}
+        </td>
+      </ng-container>
+
+      <!-- HCL Column -->
+      <ng-container matColumnDef="HCL">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ getColumnLabel("HCL") }}
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{ formatValue("HCL", element.HCL) }}
+        </td>
+      </ng-container>
+
+      <!-- NH3 Column -->
+      <ng-container matColumnDef="NH3">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ getColumnLabel("NH3") }}
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{ formatValue("NH3", element.NH3) }}
+        </td>
+      </ng-container>
+
+      <!-- EC Column -->
+      <ng-container matColumnDef="EC">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ getColumnLabel("EC") }}
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{ formatValue("EC", element.EC) }}
+        </td>
+      </ng-container>
+
+      <!-- Marker Column -->
+      <ng-container matColumnDef="MRK">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ getColumnLabel("MRK") }}
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <span [class]="'marker-badge marker-' + element.MRK.toLowerCase()">
+            {{ element.MRK }}
+          </span>
+        </td>
+      </ng-container>
+
+      <!-- Actions Column -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef class="actions-column">
+          Actions
+        </th>
+        <td mat-cell *matCellDef="let element" class="actions-column">
+          <button mat-mini-fab color="primary" title="View Details">
+            <mat-icon>visibility</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+      <!-- Row shown when there is no matching data -->
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+          No data matching the filter "{{ input.value }}"
+        </td>
+      </tr>
+    </table>
+
+    <mat-paginator
+      [pageSizeOptions]="[100, 1000]"
+      showFirstLastButtons
+      aria-label="Select page of air quality data"
+    >
+    </mat-paginator>
+  </div>
+</div>

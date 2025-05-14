@@ -1,0 +1,204 @@
+.table-container {
+  padding: 20px;
+  background-color: #fafafa;
+  min-height: 100vh;
+}
+
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+
+  h2 {
+    margin: 0;
+    color: #333;
+  }
+}
+
+.filter-input {
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 20px;
+}
+
+.table-wrapper {
+  border-radius: 8px;
+  overflow: auto;
+  max-height: 70vh;
+}
+
+.full-width-table {
+  width: 100%;
+  min-width: 1200px; // Ensure minimum width for all columns
+}
+
+.mat-header-cell {
+  font-weight: 600;
+  color: #444;
+  font-size: 13px;
+
+  &.date-time-column {
+    min-width: 100px;
+  }
+
+  &.pm-column {
+    min-width: 120px;
+  }
+
+  &.actions-column {
+    width: 100px;
+    text-align: center;
+  }
+}
+
+.mat-cell {
+  font-size: 12px;
+
+  &.date-time-column {
+    font-family: monospace;
+  }
+
+  &.pm-column {
+    font-weight: 500;
+  }
+
+  &.actions-column {
+    text-align: center;
+  }
+}
+
+// Air quality indicators
+.high-pm {
+  background-color: #ffebee;
+  color: #c62828;
+  font-weight: 600;
+}
+
+.good-iaq {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.moderate-iaq {
+  background-color: #fff3e0;
+  color: #ef6c00;
+}
+
+.poor-iaq {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+.high-co2 {
+  background-color: #fff3e0;
+  color: #ef6c00;
+}
+
+.marker-badge {
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  display: inline-block;
+}
+
+.marker-ok {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.marker-warning {
+  background-color: #fff3e0;
+  color: #ef6c00;
+}
+
+.marker-error {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+.mat-row:hover {
+  background-color: #f5f5f5;
+}
+
+button[mat-mini-fab] {
+  transform: scale(0.8);
+}
+
+// Sticky header
+.mat-header-row {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: #fff;
+}
+
+// Custom scrollbar
+.table-wrapper::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.table-wrapper::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+// Responsive design
+@media (max-width: 1200px) {
+  .table-container {
+    padding: 10px;
+  }
+
+  .table-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 15px;
+  }
+
+  .filter-input {
+    max-width: none;
+  }
+
+  .full-width-table {
+    font-size: 11px;
+  }
+
+  .mat-header-cell,
+  .mat-cell {
+    padding: 8px;
+  }
+}
+
+// Print styles
+@media print {
+  .table-container {
+    padding: 0;
+  }
+
+  .table-header button,
+  .filter-input,
+  mat-paginator,
+  .actions-column {
+    display: none !important;
+  }
+
+  .table-wrapper {
+    max-height: none;
+    overflow: visible;
+  }
+
+  .full-width-table {
+    font-size: 10px;
+  }
+}
