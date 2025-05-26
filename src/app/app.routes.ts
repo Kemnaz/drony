@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { AirQualityComponent } from './air-quality/air-quality.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/table', pathMatch: 'full' },
@@ -11,5 +12,6 @@ export const routes: Routes = [
     path: 'graph',
     loadComponent: () =>
       import('./graph/graph.component').then((m) => m.GraphComponent),
-  },
+  },  { path: 'air-quality', component: AirQualityComponent }
+
 ];
