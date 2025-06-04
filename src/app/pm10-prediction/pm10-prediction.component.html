@@ -1,0 +1,80 @@
+<div class="pm10-prediction-container" [class.dark-theme]="isDarkTheme">
+  <h2 class="component-title">Predykcja Stężenia PM10</h2>
+
+  <div *ngIf="isLoading" class="loading-indicator">
+    <div class="spinner"></div>
+    <p>Ładowanie danych predykcji...</p>
+  </div>
+
+  <div *ngIf="errorLoading && !isLoading" class="error-message">
+    <p class="error-title">Błąd ładowania danych</p>
+    <p class="error-details">{{ errorMessage }}</p>
+    <button (click)="fetchPredictionData()" class="retry-button">
+      Spróbuj ponownie
+    </button>
+  </div>
+
+  <div *ngIf="!isLoading && !errorLoading && !predictionData" class="no-data-message">
+    <p>Brak dostępnych danych predykcji PM10.</p>
+  </div>
+
+  <div *ngIf="!isLoading && !errorLoading && predictionData" class="prediction-content">
+    <div class="info-section card">
+      <h3 class="card-title">Informacje o Predykcji</h3>
+      <div class="info-grid">
+        <div class="info-item">
+          <span class="info-label">Wygenerowano:</span>
+          <span class="info-value">{{ formatDisplayDate(predictionData.generatedAt, 'd MMM y, HH:mm:ss') }}</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Horyzont predykcji:</span>
+          <span class="info-value">{{ predictionData.predictionHorizonMinutes }} minut</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Ostatni pomiar PM10:</span>
+          <span class="info-value">{{ predictionData.lastMeasuredPM10.toFixed(1) }} µg/m³</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Czas ostatniego pomiaru:</span>
+          <span class="info-value">{{ formatDisplayDate(predictionData.lastMeasurementTime, 'd MMM y, HH:mm:ss') }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="summary-section card">
+      <h3 class="card-title">Podsumowanie Predykcji PM10</h3>
+      <div class="summary-grid">
+        <div class="summary-item">
+          <span class="summary-label">Średnia przewidywana:</span>
+          <span class="summary-value">{{ predictionData.summary.avgPredictedPM10.toFixed(2) }} µg/m³</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Min. przewidywane:</span>
+          <span class="summary-value">{{ predictionData.summary.minPredictedPM10.toFixed(2) }} µg/m³</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Max. przewidywane:</span>
+          <span class="summary-value">{{ predictionData.summary.maxPredictedPM10.toFixed(2) }} µg/m³</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Trend:</span>
+          <span class="summary-value trend-badge" [ngClass]="getTrendClass(predictionData.summary.trend)">
+            {{ predictionData.summary.trend || 'Brak danych' }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="chart-section card" *ngIf="predictionData.predictions && predictionData.predictions.length > 0">
+      <div class="chart-wrapper">
+        <canvas #predictionChartCanvas></canvas>
+      </div>
+    </div>
+     <div *ngIf="predictionData.predictions && predictionData.predictions.length === 0" class="no-data-message card">
+        <p>Brak szczegółowych punktów predykcji do wyświetlenia na wykresie.</p>
+    </div>
+
+  </div>
+  <!-- Example Theme Toggle Button -->
+  <!-- <button (click)="toggleTheme()" class="theme-toggle-button">Przełącz motyw</button> -->
+</div>

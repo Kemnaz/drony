@@ -84,7 +84,6 @@ export class AirQualityComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild('input') input!: ElementRef;
 
-  // Column labels for better display
   columnLabels: { [key: string]: string } = {
     select: '',
     id: 'ID',
@@ -102,7 +101,6 @@ export class AirQualityComponent implements OnInit, AfterViewInit {
     actions: 'Akcje',
   };
 
-  // Column groups for better organization
   columnGroups = {
     basic: ['id', 'date', 'time', 'location', 'source'],
     particulates: ['pm2_5', 'pm10'],
@@ -111,7 +109,6 @@ export class AirQualityComponent implements OnInit, AfterViewInit {
     controls: ['select', 'actions'],
   };
 
-  // Quality level colors and thresholds
   airQualityLevels = [
     { name: 'Bardzo dobra', threshold: 20, color: '#58B108' },
     { name: 'Dobra', threshold: 40, color: '#B0DD10' },
@@ -130,10 +127,8 @@ export class AirQualityComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.fetchAirQualityData();
 
-    // Update displayed columns when selection changes
     this.columnsToDisplay.valueChanges.subscribe(selectedColumns => {
       if (selectedColumns && selectedColumns.length) {
-        // Always keep select and actions columns
         if (!selectedColumns.includes('select')) {
           selectedColumns.unshift('select');
         }
@@ -149,7 +144,6 @@ export class AirQualityComponent implements OnInit, AfterViewInit {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
 
-    // Custom sort for quality level
     this.dataSource.sortingDataAccessor = (item, property) => {
       switch (property) {
         case 'quality_level':
@@ -159,7 +153,6 @@ export class AirQualityComponent implements OnInit, AfterViewInit {
       }
     };
 
-    // Custom filter
     this.dataSource.filterPredicate = (data: AirQualityData, filter: string) => {
       const filterValue = filter.trim().toLowerCase();
       return Object.keys(data).some(key => {
@@ -222,14 +215,11 @@ export class AirQualityComponent implements OnInit, AfterViewInit {
   }
 
   calculateAQI(pm25: number, pm10: number, no2: number, o3: number): number {
-    // Simplified AQI calculation based on European standards
-    // In a real application, this would be more complex
     const pm25Index = Math.round((pm25 / 25) * 50);
     const pm10Index = Math.round((pm10 / 50) * 50);
     const no2Index = Math.round((no2 / 200) * 50);
     const o3Index = Math.round((o3 / 180) * 50);
 
-    // Take the highest value as the AQI
     return Math.max(pm25Index, pm10Index, no2Index, o3Index);
   }
 
@@ -248,7 +238,6 @@ export class AirQualityComponent implements OnInit, AfterViewInit {
   }
 
   getQualityLevelSortValue(qualityLevel: string): number {
-    // Convert quality level string to number for sorting
     return this.airQualityLevels.findIndex(l => l.name === qualityLevel);
   }
 
@@ -267,7 +256,6 @@ export class AirQualityComponent implements OnInit, AfterViewInit {
         ? this.selection.selected
         : this.dataSource.data;
 
-      // Convert data to CSV
       const headers = Object.keys(this.columnLabels)
         .filter(key => key !== 'select' && key !== 'actions')
         .map(key => this.columnLabels[key]);
@@ -283,7 +271,6 @@ export class AirQualityComponent implements OnInit, AfterViewInit {
         ...rows.map(row => row.join(','))
       ].join('\n');
 
-      // Create a download link
       const blob = new Blob([csvContent], { type: 'text/csv' });
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -330,7 +317,6 @@ export class AirQualityComponent implements OnInit, AfterViewInit {
   formatValue(column: string, value: any): string {
     if (value === null || value === undefined) return '-';
 
-    // Format numbers based on column type
     if (typeof value === 'number') {
       if (['pm2_5', 'pm10', 'no2', 'so2', 'o3'].includes(column)) {
         return value.toFixed(1);
@@ -344,15 +330,12 @@ export class AirQualityComponent implements OnInit, AfterViewInit {
     return value.toString();
   }
 
-  // Selection methods
-  /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
     return numSelected === numRows;
   }
 
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
   toggleAllRows() {
     if (this.isAllSelected()) {
       this.selection.clear();
@@ -362,7 +345,6 @@ export class AirQualityComponent implements OnInit, AfterViewInit {
     this.selection.select(...this.dataSource.data);
   }
 
-  /** The label for the checkbox on the passed row */
   checkboxLabel(row?: AirQualityData): string {
     if (!row) {
       return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
@@ -370,9 +352,7 @@ export class AirQualityComponent implements OnInit, AfterViewInit {
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id}`;
   }
 
-  // Action methods
   viewDetails(element: AirQualityData) {
-    // In a real application, you would open a dialog with details
     this.expandedElement = this.expandedElement === element ? null : element;
   }
 

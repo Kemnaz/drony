@@ -1,0 +1,247 @@
+// Base variables (can be imported from a global styles file)
+$font-family-sans: 'Inter', sans-serif; // Ensure Inter is loaded
+
+// Light Theme
+$light-bg-primary: #ffffff;
+$light-bg-secondary: #f9fafb; // gray-50
+$light-text-primary: #111827; // gray-900
+$light-text-secondary: #4b5563; // gray-600
+$light-border-color: #e5e7eb; // gray-200
+$light-card-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+
+// Dark Theme
+$dark-bg-primary: #1f2937; // gray-800
+$dark-bg-secondary: #374151; // gray-700
+$dark-text-primary: #f3f4f6; // gray-100
+$dark-text-secondary: #9ca3af; // gray-400
+$dark-border-color: #4b5563; // gray-600
+$dark-card-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 2px -1px rgba(0, 0, 0, 0.15);
+
+
+$primary-accent-color: #3b82f6; // blue-500
+$primary-accent-hover: #2563eb; // blue-600
+
+$error-bg-light: #fef2f2; // red-50
+$error-text-light: #b91c1c; // red-700
+$error-bg-dark: #450a0a;
+$error-text-dark: #f87171;
+
+$trend-increasing-bg: rgba(239, 68, 68, 0.1); // red-500 with opacity
+$trend-increasing-text: #dc2626; // red-600
+$trend-decreasing-bg: rgba(34, 197, 94, 0.1); // green-500 with opacity
+$trend-decreasing-text: #16a34a; // green-600
+$trend-stable-bg: rgba(245, 158, 11, 0.1); // amber-500 with opacity
+$trend-stable-text: #d97706; // amber-600
+
+// Keyframes for spinner
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.pm10-prediction-container {
+  font-family: $font-family-sans;
+  background-color: $light-bg-secondary;
+  color: $light-text-primary;
+  padding: 16px;
+  max-width: 900px;
+  margin: 20px auto;
+  border-radius: 8px;
+
+  @media (min-width: 768px) {
+    padding: 24px;
+  }
+
+  &.dark-theme {
+    background-color: $dark-bg-primary;
+    color: $dark-text-primary;
+
+    .card {
+      background-color: $dark-bg-secondary;
+      border-color: $dark-border-color;
+      box-shadow: $dark-card-shadow;
+    }
+
+    .component-title, .card-title {
+      color: $dark-text-primary;
+    }
+
+    .info-label, .summary-label {
+      color: $dark-text-secondary;
+    }
+    .info-value, .summary-value {
+       color: $dark-text-primary;
+    }
+
+    .loading-indicator p, .no-data-message p {
+      color: $dark-text-secondary;
+    }
+
+    .error-message {
+      background-color: $error-bg-dark;
+      .error-title, .error-details {
+        color: $error-text-dark;
+      }
+    }
+     .trend-badge {
+        &.trend-increasing { background-color: darken($trend-increasing-bg, 5%); color: lighten($trend-increasing-text, 15%);}
+        &.trend-decreasing { background-color: darken($trend-decreasing-bg, 5%); color: lighten($trend-decreasing-text, 15%);}
+        &.trend-stable { background-color: darken($trend-stable-bg, 5%); color: lighten($trend-stable-text, 15%);}
+    }
+  }
+}
+
+.component-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  text-align: center;
+  color: $light-text-primary;
+}
+
+.card {
+  background-color: $light-bg-primary;
+  border: 1px solid $light-border-color;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 20px;
+  box-shadow: $light-card-shadow;
+
+  @media (min-width: 768px) {
+    padding: 20px;
+  }
+}
+
+.card-title {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 16px;
+  color: $light-text-primary;
+  border-bottom: 1px solid $light-border-color;
+  padding-bottom: 8px;
+}
+
+.info-grid, .summary-grid {
+  display: grid;
+  gap: 12px;
+
+  @media (min-width: 640px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+}
+
+.info-item, .summary-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.info-label, .summary-label {
+  font-size: 13px;
+  color: $light-text-secondary;
+  font-weight: 500;
+}
+
+.info-value, .summary-value {
+  font-size: 15px;
+  color: $light-text-primary;
+  font-weight: 400;
+}
+
+.trend-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px; // pill shape
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+
+  &.trend-increasing {
+    background-color: $trend-increasing-bg;
+    color: $trend-increasing-text;
+  }
+  &.trend-decreasing {
+    background-color: $trend-decreasing-bg;
+    color: $trend-decreasing-text;
+  }
+  &.trend-stable {
+    background-color: $trend-stable-bg;
+    color: $trend-stable-text;
+  }
+}
+
+.chart-wrapper {
+  position: relative;
+  height: 300px; // Adjust as needed
+
+  @media (min-width: 768px) {
+    height: 350px;
+  }
+  canvas {
+    max-width: 100%;
+  }
+}
+
+.loading-indicator, .no-data-message {
+  text-align: center;
+  padding: 30px 0;
+  color: $light-text-secondary;
+
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid $primary-accent-color;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 12px auto;
+  }
+}
+
+.error-message {
+  background-color: $error-bg-light;
+  color: $error-text-light;
+  border: 1px solid darken($error-bg-light, 10%);
+  border-radius: 6px;
+  padding: 16px;
+  text-align: center;
+
+  .error-title {
+    font-weight: 600;
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+  .error-details {
+    font-size: 14px;
+    margin-bottom: 12px;
+  }
+  .retry-button {
+    background-color: $primary-accent-color;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s ease;
+    &:hover {
+      background-color: $primary-accent-hover;
+    }
+  }
+}
+
+.theme-toggle-button { // Example styling for a theme toggle
+  display: block;
+  margin: 20px auto 0 auto;
+  padding: 8px 16px;
+  background-color: $primary-accent-color;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  &:hover {
+    background-color: $primary-accent-hover;
+  }
+}

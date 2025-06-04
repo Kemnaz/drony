@@ -1,1 +1,52 @@
-<p>chart works!</p>
+<div class="air-quality-chart-container">
+  <div class="controls">
+    <label for="parameterSelect" class="control-label">
+      Wybierz parametr:
+    </label>
+    <select
+      id="parameterSelect"
+      [(ngModel)]="selectedParameter"
+      (change)="updateChart()"
+      class="parameter-select">
+      <option *ngFor="let param of availableParameters" [value]="param.key">
+        {{param.label}} ({{param.unit || 'brak'}})
+      </option>
+    </select>
+  </div>
+
+  <div *ngIf="isLoading" class="loading-indicator">
+    <div class="spinner"></div>
+    <p>Ładowanie danych...</p>
+  </div>
+
+  <div *ngIf="errorLoading && !isLoading" class="error-message">
+    <p class="error-title">Wystąpił błąd podczas ładowania danych.</p>
+    <p class="error-details">{{ errorMessage }}</p>
+    <button (click)="fetchData()" class="retry-button">
+      Spróbuj ponownie
+    </button>
+  </div>
+
+  <div *ngIf="!isLoading && !errorLoading && data.length === 0 && initialLoadAttempted" class="no-data-message">
+     <p>Brak danych do wyświetlenia.</p>
+  </div>
+
+  <div class="chart-wrapper" [class.hidden]="isLoading || errorLoading || (data.length === 0 && initialLoadAttempted)">
+    <canvas #chartCanvas></canvas>
+  </div>
+
+  <div class="chart-legend" [class.hidden]="isLoading || errorLoading || (data.length === 0 && initialLoadAttempted)">
+    <div class="legend-item">
+      <span class="legend-color legend-color-average"></span>
+      <span class="legend-label">Średnia</span>
+    </div>
+    <div class="legend-item">
+      <span class="legend-color legend-color-minimum"></span>
+      <span class="legend-label">Minimum</span>
+    </div>
+    <div class="legend-item">
+      <span class="legend-color legend-color-maximum"></span>
+      <span class="legend-label">Maksimum</span>
+    </div>
+  </div>
+</div>

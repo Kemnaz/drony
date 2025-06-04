@@ -1,0 +1,257 @@
+// Define variables for colors and breakpoints for easier maintenance
+$font-family-inter: 'Inter', sans-serif;
+
+// Light Theme Colors
+$light-bg: #ffffff;
+$light-text: #374151; // gray-700
+$light-text-secondary: #6b7280; // gray-500
+$light-border: #d1d5db; // gray-300
+$light-select-bg: #ffffff;
+$light-error-bg: #fef2f2; // red-50
+$light-error-text: #b91c1c; // red-700
+$light-error-details-text: #dc2626; // red-600
+
+// Dark Theme Colors (apply these by adding a .dark class to a parent, e.g., body)
+$dark-bg: #1f2937; // gray-800
+$dark-text: #d1d5db; // gray-300
+$dark-text-secondary: #9ca3af; // gray-400
+$dark-border: #4b5563; // gray-600
+$dark-select-bg: #374151; // gray-700
+$dark-error-bg: #450a0a; // Equivalent to dark:bg-red-900 (approx)
+$dark-error-text: #f87171; // red-300 (approx for dark mode)
+$dark-error-details-text: #ef4444; // red-400 (approx for dark mode)
+
+
+$primary-color: #4f46e5; // indigo-600
+$primary-color-hover: #4338ca; // indigo-700
+$focus-ring-color: rgba($primary-color, 0.5);
+
+$border-radius-lg: 8px;
+$border-radius-md: 6px;
+$shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+$shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+
+// Breakpoints
+$sm-breakpoint: 640px;
+$md-breakpoint: 768px; // Not used in current Tailwind, but good to have
+
+// Keyframes for spinner
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.air-quality-chart-container {
+  font-family: $font-family-inter;
+  background-color: $light-bg;
+  color: $light-text;
+  padding: 16px;
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-lg;
+  max-width: 768px; // max-w-4xl is quite large, adjusted to common content width
+  margin: 20px auto;
+
+  @media (min-width: $sm-breakpoint) {
+    padding: 24px;
+  }
+
+  &.dark-theme { // Apply this class to the container or a parent for dark mode
+    background-color: $dark-bg;
+    color: $dark-text;
+
+    .control-label {
+      color: $dark-text-secondary;
+    }
+
+    .parameter-select {
+      background-color: $dark-select-bg;
+      border-color: $dark-border;
+      color: $dark-text;
+    }
+
+    .loading-indicator p, .no-data-message p {
+      color: $dark-text-secondary;
+    }
+
+    .error-message {
+      background-color: $dark-error-bg;
+      .error-title {
+        color: $dark-error-text;
+      }
+      .error-details {
+        color: $dark-error-details-text;
+      }
+    }
+    .legend-label {
+        color: $dark-text-secondary;
+    }
+  }
+}
+
+.controls {
+  margin-bottom: 24px;
+
+  .control-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: $light-text;
+    margin-bottom: 4px;
+  }
+
+  .parameter-select {
+    display: block;
+    width: 100%;
+    padding: 8px 12px;
+    font-size: 14px; // text-base is 16px, 14px is sm
+    border: 1px solid $light-border;
+    border-radius: $border-radius-md;
+    box-shadow: $shadow-sm;
+    background-color: $light-select-bg;
+    color: $light-text;
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+
+    &:focus {
+      outline: none;
+      border-color: $primary-color;
+      box-shadow: 0 0 0 3px $focus-ring-color;
+    }
+  }
+}
+
+.loading-indicator, .no-data-message, .error-message {
+  text-align: center;
+  padding: 40px 0;
+}
+
+.loading-indicator {
+  .spinner {
+    width: 48px;
+    height: 48px;
+    border: 4px solid $primary-color; // border-indigo-500
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+  }
+  p {
+    margin-top: 12px;
+    color: $light-text-secondary;
+  }
+}
+
+.error-message {
+  background-color: $light-error-bg;
+  border-radius: $border-radius-md;
+  padding: 16px;
+  .error-title {
+    color: $light-error-text;
+    font-weight: 600;
+  }
+  .error-details {
+    color: $light-error-details-text;
+    font-size: 14px;
+    margin-top: 4px;
+  }
+  .retry-button {
+    margin-top: 16px;
+    padding: 8px 16px;
+    background-color: $primary-color;
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+    border-radius: $border-radius-md;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: $primary-color-hover;
+    }
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px $focus-ring-color;
+    }
+  }
+}
+
+.no-data-message p {
+  color: $light-text-secondary;
+}
+
+.chart-wrapper {
+  position: relative;
+  height: 288px; // h-72
+  margin-bottom: 24px;
+
+  @media (min-width: $sm-breakpoint) {
+    height: 384px; // sm:h-96
+  }
+
+  canvas {
+    max-width: 100%;
+    height: auto; // Maintain aspect ratio if canvas itself doesn't have fixed height
+  }
+}
+
+.chart-legend {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 16px; // gap-y-2 gap-x-4
+
+  @media (min-width: $sm-breakpoint) {
+    gap: 8px 24px; // sm:gap-x-6
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+  }
+
+  .legend-color {
+    width: 12px; // w-3
+    height: 12px; // h-3
+    border-radius: 2px; // rounded-sm
+    margin-right: 6px; // ml-1.5 equivalent
+
+    @media (min-width: $sm-breakpoint) {
+      width: 16px; // sm:w-4
+      height: 16px; // sm:h-4
+    }
+
+    &-average { background-color: #36A2EB; }
+    &-minimum { background-color: #FF6384; }
+    &-maximum { background-color: #4BC0C0; }
+  }
+
+  .legend-label {
+    font-size: 12px; // text-xs
+    color: $light-text;
+
+    @media (min-width: $sm-breakpoint) {
+      font-size: 14px; // sm:text-sm
+    }
+  }
+}
+
+.hidden {
+  display: none !important; // Ensure it overrides other display properties
+}
+
+// Dark theme specific chart colors (if needed, Chart.js options can handle this better)
+// This is an example if you want to override chart.js colors via CSS based on theme
+// However, it's better to update Chart.js options dynamically as done in the TS.
+.dark-theme {
+    // Example:
+    // .chart-wrapper canvas { /* Might not work as canvas is drawn by JS */ }
+    // For Chart.js, it's best to update the chart configuration object in TypeScript
+    // when the theme changes, as done with `document.body.classList.contains('dark')`
+    // for title, ticks, and grid colors.
+}
+
