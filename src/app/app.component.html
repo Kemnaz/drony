@@ -1,34 +1,28 @@
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<mat-toolbar color="primary">
+  <span class="toolbar-title">
+    <mat-icon>flight</mat-icon>
+    {{ title }}
+  </span>
 
-<header class="app-header">
-  <nav class="navbar navbar-expand-lg">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">
-        <i class="fas fa-drone nav-icon"></i>
-        Drone Data Viewer
-      </a>
+  <span class="spacer"></span>
 
-      <div class="navbar-nav ms-auto">
-        <a class="nav-link" routerLink="/table" routerLinkActive="active">
-          <i class="fas fa-table me-1"></i>
-          Table
-        </a>
-        <a class="nav-link" routerLink="/graph" routerLinkActive="active">
-          <i class="fas fa-chart-line me-1"></i>
-          Graph
-        </a>
-        <a class="nav-link" routerLink="/air-quality" routerLinkActive="active">
-          <i class="fas fa-chart-line me-1"></i>
-          Air
-        </a>
-        <a class="nav-link" routerLink="/Graftest" routerLinkActive="active">
-          <i class="fas fa-chart-line me-1"></i>
-          Graftest
-        </a>
-      </div>
-    </div>
-  </nav>
-</header>
+  <a mat-button routerLink="/table" routerLinkActive="active">
+    <mat-icon>table_chart</mat-icon>
+    Table
+  </a>
+  <a mat-button routerLink="/graph" routerLinkActive="active">
+    <mat-icon>show_chart</mat-icon>
+    Graph
+  </a>
+  <a mat-button routerLink="/air-quality" routerLinkActive="active">
+    <mat-icon>air</mat-icon>
+    Air
+  </a>
+  <a mat-button routerLink="/Graftest" routerLinkActive="active">
+    <mat-icon>analytics</mat-icon>
+    Graftest
+  </a>
+</mat-toolbar>
 
 <main class="main-content">
   <div class="container">

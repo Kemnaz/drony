@@ -13,8 +13,7 @@ export const routes: Routes = [
     path: 'graph',
     loadComponent: () =>
       import('./graph/graph.component').then((m) => m.GraphComponent),
-  },  { path: 'air-quality', component: AirQualityComponent },
+  },
+  { path: 'air-quality', component: AirQualityComponent },
   { path: 'Graftest', component: AirQualityChartComponent }
-
-
 ];

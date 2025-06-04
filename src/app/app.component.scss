@@ -1,61 +1,14 @@
-.app-header {
-  background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  border-bottom: 3px solid #2980b9;
-}
-
-.navbar {
-  padding: 1rem 0;
-  background: transparent !important;
-}
-
-.navbar-brand {
-  font-size: 1.75rem;
+.toolbar-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   font-weight: bold;
-  color: white !important;
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  gap: 10px;
 }
 
-.nav-icon {
-  font-size: 1.5rem;
-  color: #3498db;
+.spacer {
+  flex: 1 1 auto;
 }
 
-.navbar-nav {
-  gap: 10px;
+a.active {
+  font-weight: bold;
 }
-
-.nav-link {
-  color: rgba(255, 255, 255, 0.9) !important;
-  font-weight: 500;
-  padding: 10px 15px;
-  border-radius: 6px;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-}
-
-.nav-link:hover {
-  color: white !important;
-  background-color: rgba(255, 255, 255, 0.1);
-  transform: translateY(-1px);
-}
-
-.nav-link.active {
-  color: white !important;
-  background-color: rgba(52, 152, 219, 0.2);
-  border: 1px solid rgba(52, 152, 219, 0.3);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Main Content */
-.main-content {
-  min-height: calc(100vh - 80px);
-  background-color: #f8f9fa;
-  padding-top: 2rem;
-}
-@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css");
